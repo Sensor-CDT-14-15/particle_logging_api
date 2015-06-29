@@ -3,10 +3,10 @@ A simple, Python-powered web API for accessing stored Particle.io data from our 
 
 ## Current endpoints
 
-### ``/``
+### ``GET /``
 Display welcome message and database version.
 
-### ``particle/devices``
+### ``GET particle/devices``
 Return all devices that the database knows of, in the format:
 ```
 {

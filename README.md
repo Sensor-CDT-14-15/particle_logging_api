@@ -6,7 +6,7 @@ A simple, Python-powered web API for accessing stored Particle.io data from our 
 ### ``GET /``
 Display welcome message and database version.
 
-### ``GET particle/devices``
+### ``GET /devices``
 Return all devices that the database knows of, in the format:
 ```
 {

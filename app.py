@@ -1,10 +1,9 @@
-#!/bin/python
 from flask import Flask, jsonify, make_response
 import MySQLdb as mdb
 
 MYSQL_HOST = 'localhost'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = ''
+MYSQL_USER = 'particle'
+MYSQL_PASSWORD = 'particle'
 MYSQL_DATABASE = 'particle'
 
 app = Flask(__name__)

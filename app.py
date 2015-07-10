@@ -19,7 +19,7 @@ def index():
 	except:
 		return "Particle logging API"
 
-@app.route('/particle/devices', methods=['GET'])
+@app.route('/devices', methods=['GET'])
 def get_devices():
 	try:
 		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)

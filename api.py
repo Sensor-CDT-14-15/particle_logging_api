@@ -38,9 +38,16 @@ def get_events():
 	start = request.args.get('start')
 	num_rows = request.args.get('num_rows')
 	try:
+		device = request.args.get('device')
+	except:
+		device = None
+	try:
 		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 		cur = con.cursor()
-		cur.execute("SELECT * FROM events LIMIT " + str(int(start) - 1) + ", " + num_rows)
+		if (device != None):
+			cur.execute("SELECT * FROM events WHERE device='" + device + "' LIMIT "  + str(int(start) - 1) + ", " + num_rows)
+		else:
+			cur.execute("SELECT * FROM events LIMIT " + str(int(start) - 1) + ", " + num_rows)
 		response = []
 		for i in range(0, int(num_rows)):
 			row = cur.fetchone()

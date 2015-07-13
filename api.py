@@ -51,7 +51,7 @@ def get_events():
 		response = []
 		for i in range(0, int(num_rows)):
 			row = cur.fetchone()
-			response.append({"id": row[0], "device": row[2], "data": row[3]})
+			response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "data": row[3]})
 		return jsonify(events=response)
 	except:
 		return make_response(jsonify({'error': 'No event data returned'}), 404)

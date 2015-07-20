@@ -35,23 +35,47 @@ def get_devices():
 
 @app.route('/events', methods=['GET'])
 def get_events():
-	start = request.args.get('start')
-	num_rows = request.args.get('num_rows')
+	try:
+		start = request.args.get('start')
+		num_rows = request.args.get('num_rows')
+	except:
+		start = None
+		num_rows = None
 	try:
 		device = request.args.get('device')
 	except:
 		device = None
 	try:
+		start_date = request.args.get('start_date')
+		end_date = request.args.get('end_date')
+	except:
+		start_date = None
+		end_date = None
+	
+	try:
 		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 		cur = con.cursor()
+		
 		if (device != None):
-			cur.execute("SELECT * FROM events WHERE device='" + device + "' LIMIT "  + str(int(start) - 1) + ", " + num_rows)
+			if (start_date != None):
+				query = "SELECT * FROM events WHERE device='" + device + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "'"
+			else:
+				query = "SELECT * FROM events WHERE device='" + device + "' LIMIT "  + str(int(start) - 1) + ", " + num_rows
 		else:
-			cur.execute("SELECT * FROM events LIMIT " + str(int(start) - 1) + ", " + num_rows)
+			query = "SELECT * FROM events LIMIT " + str(int(start) - 1) + ", " + num_rows
+		
+		cur.execute(query)
+		
 		response = []
-		for i in range(0, int(num_rows)):
-			row = cur.fetchone()
-			response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "data": row[3]})
+		if (num_rows != None):
+			for i in range(0, int(num_rows)):
+				row = cur.fetchone()
+				response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "data": row[3]})
+		else:
+			rows = cur.fetchall()
+			for row in rows:
+				response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "data": row[3]})
+		
 		return jsonify(events=response)
 	except:
 		return make_response(jsonify({'error': 'No event data returned'}), 404)

@@ -31,7 +31,17 @@ Return all devices that the database knows of, in the format:
 | num_rows  | The number of rows to return           |
 | [device]  | The device id for which to return rows |
 
-Return event data, start from row ``start`` and containing ``num_rows`` rows (for device ``device``, if specified), in the format:
+Return event data, start from ``start_date`` and ending on ``end_date`` (for device ``device``, if specified), in the format below.
+
+or
+
+| Parameter  | Description                            |
+|------------|----------------------------------------|
+| start_date | The date of the first row to return    |
+| end_date   | The date of the last row to return     |
+| device     | The device id for which to return rows |
+
+Return event data, start from row ``start`` and containing ``num_rows`` rows for device ``device``, in the format below.
 
 ```
 {

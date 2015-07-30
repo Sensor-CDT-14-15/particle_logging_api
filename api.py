@@ -102,7 +102,7 @@ def get_measurements():
 		rows = cur.fetchall()
 		for row in rows:
 			response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "measurement": row[4], "value": row[5]})
-		return jsonify(events=response)
+		return jsonify(measurements=response)
 	except:
 		return make_response(jsonify({'error': 'No measurement data returned'}), 404)
 

@@ -82,14 +82,21 @@ def get_events():
 
 @app.route('/measurements', methods=['GET'])
 def get_measurements():
-	start_date = request.args.get('start_date')
-	end_date = request.args.get('end_date')
+	try:
+		start_date = request.args.get('start_date')
+		end_date = request.args.get('end_date')
+	except:
+		start_date = None
+		end_date = None
 	device = request.args.get('device')
 	measurement = request.args.get('measurement')
 	try:
 		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 		cur = con.cursor()
-		query = "SELECT * FROM events WHERE device='" + device + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "' AND measurement='" + measurement + "'"
+		if (start_date != None):
+			query = "SELECT * FROM events WHERE device='" + device + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "' AND measurement='" + measurement + "'"
+		else :
+			query = "SELECT * FROM events WHERE device='" + device + "' AND measurement='" + measurement + "'"
 		cur.execute(query)
 		response = []
 		rows = cur.fetchall()

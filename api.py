@@ -80,5 +80,24 @@ def get_events():
 	except:
 		return make_response(jsonify({'error': 'No event data returned'}), 404)
 
+@app.route('/measurements', methods=['GET'])
+def get_measurements():
+	start_date = request.args.get('start_date')
+	end_date = request.args.get('end_date')
+	device = request.args.get('device')
+	measurement = request.args.get('measurement')
+	try:
+		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+		cur = con.cursor()
+		query = "SELECT * FROM events WHERE device='" + device + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "' AND measurement='" + measurement + "'"
+		cur.execute(query)
+		response = []
+		rows = cur.fetchall()
+		for row in rows:
+			response.append({"id": row[0], "timestamp": str(row[1]), "device": row[2], "measurement": row[4], "value": row[5]})
+		return jsonify(events=response)
+	except:
+		return make_response(jsonify({'error': 'No measurement data returned'}), 404)
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)

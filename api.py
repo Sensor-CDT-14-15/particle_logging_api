@@ -94,7 +94,7 @@ def get_measurements():
 		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 		cur = con.cursor()
 		if (start_date != None):
-			query = "SELECT * FROM events WHERE device='" + device + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "' AND measurement='" + measurement + "'"
+			query = "SELECT * FROM events WHERE device='" + device + "' AND measurement='" + measurement + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "'"
 		else :
 			query = "SELECT * FROM events WHERE device='" + device + "' AND measurement='" + measurement + "'"
 		cur.execute(query)

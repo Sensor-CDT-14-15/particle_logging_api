@@ -106,5 +106,31 @@ def get_measurements():
 	except:
 		return make_response(jsonify({'error': 'No measurement data returned'}), 404)
 
+@app.route('/analyses', methods=['GET'])
+def get_analyses():
+	try:
+		start_date = request.args.get('start_date')
+		end_date = request.args.get('end_date')
+	except:
+		start_date = None
+		end_date = None
+	room = request.args.get('room')
+	name = request.args.get('name')
+	try:
+		con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+		cur = con.cursor()
+		if (start_date != None):
+			query = "SELECT * FROM analyses WHERE room='" + room + "' AND name='" + name + "' AND timestamp BETWEEN '" + start_date + "' AND '" + end_date + "'"
+		else :
+			query = "SELECT * FROM analyses WHERE room='" + room + "' AND name='" + name + "'"
+		cur.execute(query)
+		response = []
+		rows = cur.fetchall()
+		for row in rows:
+			response.append({"id": row[0], "timestamp": str(row[1]), "room": row[2], "name": row[3], "value": row[4]})
+		return jsonify(measurements=response)
+	except:
+		return make_response(jsonify({'error': 'No analysis data returned'}), 404)
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080)
